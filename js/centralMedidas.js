@@ -3,10 +3,11 @@ export default class CentralMedidas {
     constructor(_medidas) {
         this._medidas = new Array();
     }
+
     //Metodo que sirve 
     estaCiudad(ciudad) {
-        for (let i = 0; i < this._medidas.length; i++) {
-            for (let j = 0; j < this._medidas[i].length; j++) {
+        for (var i = 0; i < this._medidas.length; i++) {
+            for (var j = 0; j < this._medidas[i].length; j++) {
                 if (this._medidas[i][j] === ciudad) {
                     return false;
                 }
@@ -19,7 +20,7 @@ export default class CentralMedidas {
     insertaMedidas(ciudad, valores) {
         var devolver = true;
         var varCiudad = this.estaCiudad(ciudad);
-        if (valores.lenght != 30 && !varCiudad) {
+        if (valores.length !== 30 || !varCiudad) {
             devolver = false;
         }
         if (devolver) {
@@ -28,11 +29,12 @@ export default class CentralMedidas {
         }
         return devolver;
     }
+
     // Crea una nueva fila en la tabla de medidas correspondiente a la ciudad ciudad con valores aleatorios.Devuelve verdadero si se ha podido insertar las medidas y falso si no
     insertaAleatorio(ciudad) {
         const medidas = [ciudad];
         if (this.estaCiudad(ciudad)) {
-            for (let i = 1; i < 30; i++) {
+            for (var i = 1; i < 30; i++) {
                 medidas.push(Math.floor(Math.random() * 51) - 10);
             }
             this._medidas.push(medidas);
@@ -41,11 +43,10 @@ export default class CentralMedidas {
             return false;
         }
     }
-// Devuelve la temperatura media de la ciudad indicada durante el mes
+    // Devuelve la temperatura media de la ciudad indicada durante el mes
     mediaMedidas(ciudad) {
         var suma = 0;
         var contador = 0;
-
         for (var i = 0; i < this._medidas.length; i++) {
             if (this._medidas[i][0] === ciudad) {
                 for (var j = 1; j < this._medidas[i].length; j++) {
@@ -54,35 +55,40 @@ export default class CentralMedidas {
                 }
             }
         }
-        return contador == (suma / contador).toFixed(2);
+        return contador = suma / contador;
     }
-// Devuelve la temperatura media de todas las ciudades durante el mes
+
+    // Devuelve la temperatura media de todas las ciudades durante el mes
     mediaMedidasTotal() {
         var suma = 0;
         var contador = 0;
-        const valor = parseInt(this._medidas[i][j]);
-
         for (var i = 0; i < this._medidas.length; i++) {
-            for (var j = 0; j < this._medidas[i].length; j++) {
-                if (!isNaN(valor)) {
-                    suma += valor;
-                    contador++;
-                }
+            for (var j = 1; j < this._medidas[i].length; j++) {
+                suma += this._medidas[i][j];
+                contador++;
             }
         }
 
-        return contador === 0 ? 0 : suma / contador;
+        return contador = suma / contador;
     }
 
-    //PENDIENTE
+    //Elimina las medidas de la ciudad. Devuelve verdadero si se ha podido eliminar la fila y falso si no (pues la ciudad no existe).
     eliminaCiudad(ciudad) {
+        const nuevasMedidas = [];
         var eliminado = false;
-        
+        for (const fila of this._medidas) {
+            if (fila[0] !== ciudad) {
+                nuevasMedidas.push(fila);
+            } else {
+                eliminado = true;
+            }
+        }
+        this._medidas = nuevasMedidas;
+
         return eliminado;
     }
-    
-    // Se muestran por consola las medidas correspondientes a cada ciudad.
 
+    // Se muestran por consola las medidas correspondientes a cada ciudad.
     toConsole() {
         console.table(this._medidas);
     }
